@@ -61,17 +61,15 @@ export default defineConfig<WebdriverConfig>({
           port: 4723,
           hostname: "localhost",
           capabilities: {
-            browserName:"safari"
+            browserName:"safari",
           }
         }
-      }
+      },
     }
   ],
 
   /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run start',
-  //   url: 'http://127.0.0.1:3000',
-  //   reuseExistingServer: !process.env.CI,
-  // },
+  webServer: {
+    command: 'safaridriver -p "4723"',
+  },
 });
