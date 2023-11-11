@@ -1,9 +1,11 @@
 import { test, expect } from "./fixtures/webdriver.fixture";
 
-test("Navigate to example domain", async ({ driver })=>{
+test("Navigate to example domain", async ({ driver }, testInfo)=>{
     await driver.navigateTo("https://example.com");
     debugger;
     const title = await driver.getTitle()
     expect(title).not.toBe(undefined);
+    const screenshot = await driver.saveScreenshot("./playwright-report/screen.png");
+    await testInfo.attach("webdriver screenshot", { body: screenshot, contentType:"image/png" });
     debugger
 })
