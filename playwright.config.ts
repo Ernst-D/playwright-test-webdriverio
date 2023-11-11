@@ -1,4 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
+import { WebdriverConfig } from './types';
 
 /**
  * Read environment variables from file.
@@ -9,7 +10,7 @@ import { defineConfig, devices } from '@playwright/test';
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
-export default defineConfig({
+export default defineConfig<WebdriverConfig>({
   testDir: './tests',
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -28,44 +29,43 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+    headless: process.env.CI ? true : false
   },
 
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
-    },
-
-    {
       name: 'firefox',
       use: { ...devices['Desktop Firefox'] },
     },
-
     {
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
     },
-
-    /* Test against mobile viewports. */
-    // {
-    //   name: 'Mobile Chrome',
-    //   use: { ...devices['Pixel 5'] },
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: { ...devices['iPhone 12'] },
-    // },
-
-    /* Test against branded browsers. */
-    // {
-    //   name: 'Microsoft Edge',
-    //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-    // },
+    {
+      name: 'Mobile Chrome',
+      use: { ...devices['Pixel 5'] },
+    },
+    {
+      name: 'Mobile Safari',
+      use: { ...devices['iPhone 12'] },
+    },
+    {
+      name: 'Google Chrome',
+      use: { ...devices['Desktop Chrome HiDPI'], channel: 'chrome' },
+    },
+    {
+      name: 'Safari Webdriver',
+      use: {
+        webdriver: {
+          port: 4723,
+          hostname: "localhost",
+          capabilities: {
+            browserName:"safari"
+          }
+        }
+      }
+    }
   ],
 
   /* Run your local dev server before starting the tests */
